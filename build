@@ -1,0 +1,4 @@
+#!/bin/bash
+
+vega docker build -t meetri/echoalert:latest .
+#vega docker push meetri/echoalert:latest

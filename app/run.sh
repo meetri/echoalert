@@ -1,5 +1,21 @@
 #!/bin/bash
-#export PATH=$PATH:/opt/echo/drivers
-#export DISPLAY=:99
-Xvfb :99 -screen 0 640x480x8 -nolisten tcp &
-exec python /opt/echo/app/scrap.py
+PORT=${PORT:=5000}
+INTERVAL=${INTERVAL:=3600}
+
+echo "scrap version 0.2"
+Xvfb :99 -screen 0 1024x768x24 -nolisten tcp &
+
+export FLASK_APP=index.py
+echo "starting web service on port $PORT"
+nohup flask run -h 0.0.0.0 -p $PORT --with-threads --no-reload &
+
+while :; do
+  
+  echo "getting latest grades"
+  /opt/echo/app/scrap.py
+  echo "sending notifications" 
+  /opt/echo/app/sendnotify.py
+  echo "Sleeping for ${INTERVAL} seconds..."
+  echo $(date)
+  sleep ${INTERVAL}
+done

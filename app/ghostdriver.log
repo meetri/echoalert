@@ -1,0 +1,45 @@
+[INFO  - 2017-03-06T02:15:46.352Z] GhostDriver - Main - running on port 54120
+[INFO  - 2017-03-06T02:15:46.926Z] Session [cf5524a0-0212-11e7-b643-6f4688bb83e0] - page.settings - {"XSSAuditingEnabled":false,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/538.1 (KHTML, like Gecko) PhantomJS/2.1.1 Safari/538.1","webSecurityEnabled":true}
+[INFO  - 2017-03-06T02:15:46.926Z] Session [cf5524a0-0212-11e7-b643-6f4688bb83e0] - page.customHeaders:  - {}
+[INFO  - 2017-03-06T02:15:46.926Z] Session [cf5524a0-0212-11e7-b643-6f4688bb83e0] - Session.negotiatedCapabilities - {"browserName":"phantomjs","version":"2.1.1","driverName":"ghostdriver","driverVersion":"1.2.0","platform":"mac-10.11 (El Capitan)-64bit","javascriptEnabled":true,"takesScreenshot":true,"handlesAlerts":false,"databaseEnabled":false,"locationContextEnabled":false,"applicationCacheEnabled":false,"browserConnectionEnabled":false,"cssSelectorsEnabled":true,"webStorageEnabled":false,"rotatable":false,"acceptSslCerts":false,"nativeEvents":true,"proxy":{"proxyType":"direct"}}
+[INFO  - 2017-03-06T02:15:46.926Z] SessionManagerReqHand - _postNewSessionCommand - New Session Created: cf5524a0-0212-11e7-b643-6f4688bb83e0
+[ERROR - 2017-03-06T02:15:48.732Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1488766548705
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2017-03-06T02:15:49.558Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1488766549535
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2017-03-06T02:15:50.357Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1488766550335
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2017-03-06T02:15:51.393Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1488766551366
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2017-03-06T02:15:52.455Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1488766552444
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2017-03-06T02:15:52.978Z] Session [cf5524a0-0212-11e7-b643-6f4688bb83e0] - page.onError - msg: TransitionRejection(type: 3, message: The transition has been aborted, detail: Hook aborted transition)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2017-03-06T02:15:52.978Z] Session [cf5524a0-0212-11e7-b643-6f4688bb83e0] - page.onError - stack:
+  _defaultErrorHandler (https://amcanhs.echo-ntn.org/scripts/student.thirdparty-8669e1dd.js:1567)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2017-03-06T02:15:53.215Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1488766553182
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2017-03-06T02:16:01.177Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1488766561156
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2017-03-06T02:16:03.271Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1488766563244
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2017-03-06T02:16:05.189Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1488766565186
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2017-03-06T02:16:07.440Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1488766567419
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2017-03-06T02:16:12.439Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1488766572405
+
+  phantomjs://platform/console++.js:263 in error
