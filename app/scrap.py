@@ -4,6 +4,7 @@ import time
 import sys
 import datetime
 import logging
+import hashlib
 
 script_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(script_path + "/models")
@@ -38,30 +39,30 @@ for account in accounts:
 
     echo_summary = echo.get_grade_summary()
 
-    notify_grades = False
-    notify_assignments = False
+    notifications = []
     for course_id,course in courses.iteritems():
 
-        course.get_assignments( echo )
-        if course.update_assignments():
-            notify_assignments = True
+        course.get_agenda( echo )
+        course.get_assets( echo )
+        course.get_todos( echo )
+
+        notify = course.update_assignments()
+        if len(notify) > 0:
+            notifications += notify
 
         newgrades = Echosite.filter_course_grades ( course.data['course_name'],echo_summary )
         dif = course.compare_grades ( course.get_grades() , newgrades )
         if len(dif) > 0:
             logging.info("updating grades for {}".format ( course.data['course_name'] ))
             course.insert_grades( newgrades )
-            notify_grades = True;
+            notifications =+ [ Notifier.NOTIFYTYPES["GRADE_UPDATE"] ]
         else:
             logging.info("{} grades up to date".format(course.data['course_name']))
 
-    if notify_grades:
-        logging.info("sending grade update notification")
-        account.notify ( "GRADE_UPDATE" )
+    for notify_id in set(notifications):
+        print "Sending notification type {}".format(notify_id)
+        account.notify( notify_id )
 
-    if notify_assignments:
-        logging.info("sending assignment update notification")
-        account.notify ( "ASSIGNMENT_UPDATE" )
 
     logging.info("completed with this account")
     echo.browser.close()

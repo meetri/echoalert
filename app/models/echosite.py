@@ -27,12 +27,19 @@ class Echosite(object):
         self.browser = webdriver.PhantomJS()
         self.browser.set_window_size(1024,768)
         self.waiter = WebDriverWait(self.browser,30)
+        self.url = None
+        self.uname = None
+        self.upass = None
 
 
     def shutdown(self):
         self.browser.quit()
 
     def login ( self, url, uname , upass ):
+
+        self.url = url
+        self.uname = uname
+        self.upass = upass
 
         logging.info("logging in to {}".format(url))
 
@@ -54,9 +61,10 @@ class Echosite(object):
 
 
     def click_activities( self ):
-        activities = self.browser.find_element_by_xpath("//button[@title='COURSE ACTIVITIES']")
-        activities.click()
-        self.waiter.until ( EC.presence_of_element_located( (By.CLASS_NAME, "buzz-course-selector")) )
+        self.browser.get("{}student.html#/activity".format(self.url))
+        #activities = self.browser.find_element_by_xpath("//button[@title='COURSE ACTIVITIES']")
+        #activities.click()
+        selector = self.waiter.until ( EC.presence_of_element_located( (By.CLASS_NAME, "buzz-course-selector")) )
 
     def get_courses( self ):
         self.click_activities()
@@ -84,7 +92,59 @@ class Echosite(object):
 
         return None
 
-    def get_course_assignments( self, course_name ):
+    def get_agenda( self, course_name ):
+        self.click_activities()
+        course = self.browser.find_element_by_xpath("//div[@title='{}']".format(course_name))
+        course.click()
+        self.waiter.until ( EC.presence_of_element_located( (By.CLASS_NAME, "buzz-course-summary")) )
+        self.browser.implicitly_wait(2)
+
+        agenda_date = self.browser.find_element_by_class_name("buzz-agenda-choose-day").find_element_by_class_name("selected").text
+        agenda_content = self.browser.find_element_by_class_name("buzz-agenda-content").text
+
+        agenda_date = agenda_date.replace("\n"," ")
+
+        return {
+                "due": agenda_date,
+                "title": agenda_content
+                }
+
+
+    def get_course_assets( self, course_name ):
+        self.click_activities()
+        course = self.browser.find_element_by_xpath("//div[@title='{}']".format(course_name))
+        course.click()
+        self.waiter.until ( EC.presence_of_element_located( (By.CLASS_NAME, "buzz-course-summary")) )
+
+        sidebar = self.browser.find_element_by_class_name("buzz-side-bar")
+        course_tree = sidebar.find_elements_by_xpath("//xli-course-tree//ul//li")
+
+        closed_folders = sidebar.find_elements_by_xpath(".//xli-course-tree//ul//div[contains(@class,'xli-item-type-folder') and @aria-expanded='false']")
+        closed_count = len(closed_folders)
+        logging.info("found {} closed folders".format ( closed_count ))
+
+        while closed_count > 0:
+            for folder in closed_folders:
+                folder.click()
+            #self.browser.implicitly_wait(1)
+            closed_folders = sidebar.find_elements_by_xpath(".//xli-course-tree//ul//div[contains(@class,'xli-item-type-folder') and @aria-expanded='false']")
+            closed_count = len(closed_folders)
+            logging.info("found {} closed folders".format ( len(closed_folders) ))
+
+        course_assets= sidebar.find_elements_by_xpath(".//xli-course-tree//ul//div[contains(@class,'xli-item-type-assetlink')]")
+        assets = []
+        for asset in course_assets:
+            title = asset.text
+            assets += [{
+                'title': title,
+                'due':''
+            }]
+
+        self.browser.back()
+        self.waiter.until ( EC.presence_of_element_located( (By.CLASS_NAME, "buzz-course-selector")) )
+        return assets
+
+    def get_course_todos( self, course_name ):
 
         self.click_activities()
         course = self.browser.find_element_by_xpath("//div[@title='{}']".format(course_name))
@@ -107,6 +167,7 @@ class Echosite(object):
         return todoitems
 
 
+    '''
     def get_assignments( self ):
         self.click_activities()
         courselist = self.browser.find_elements_by_class_name("buzz-course-selector-column")
@@ -139,6 +200,7 @@ class Echosite(object):
                 self.waiter.until ( EC.presence_of_element_located( (By.CLASS_NAME, "buzz-course-selector")) )
 
         return assignments
+    '''
 
 
     def get_grade_summary( self ):

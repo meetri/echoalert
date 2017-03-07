@@ -36,24 +36,21 @@ logging.info("Checking for any pending notifications")
 logging.info("twilio sid={}, token={}".format(sid,token))
 
 sms = SmsEngine(sid,token,sms_from)
-#accounts = Account.get_user_paginate(0,100)
 
-def send_grade_update ( ndata ):
-    sms.send("EchoAlert: Grades has been updated",ndata['notification_sms'])
-    print "send grade update to {}".format(ndata)
+for ndata in notifications:
 
-def send_assignment_update ( ndata ):
-    sms.send("EchoAlert: Assignments has been updated",ndata['notification_sms'])
-    print "send assignment update to {}".format(ndata)
-
-for notification in notifications:
-
-    notify_type = notification['notification_type']
+    notify_type = ndata['notification_type']
     if notify_type == 1: #grade update
-        send_grade_update( notification )
+        sms.send("EchoAlert: Grades has been updated",ndata['notification_sms'])
     elif notify_type == 2: #assignment update
-        send_assignment_update ( notification )
+        sms.send("EchoAlert: Todo has been updated",ndata['notification_sms'])
+    elif notify_type == 3:
+        sms.send("EchoAlert: Course has been updated",ndata['notification_sms'])
+    elif notify_type == 4:
+        sms.send("EchoAlert: Agenda has been updated",ndata['notification_sms'])
+    elif notify_type == 5:
+        sms.send("EchoAlert: Asset has been updated",ndata['notification_sms'])
 
-    Notifier.mark_sent( notification['id'],"Message sent successfully" )
+    Notifier.mark_sent( ndata['id'],"Message sent successfully" )
 
 

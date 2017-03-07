@@ -10,9 +10,11 @@ class Notifier(object):
 
     NOTIFYTYPES = {
             "GRADE_UPDATE" : 1,
-            "ASSIGNMENT_UPDATE" : 2,
+            "TODO_UPDATE" : 2,
             "COURSE_UPDATE" : 3,
-            "SAYING_HI" : 4
+            "AGENDA_UPDATE" : 4,
+            "ASSET_UPDATE" : 5,
+            "SAYING_HI" : 6
             }
 
     def __init__(self,data):
@@ -42,12 +44,11 @@ class Notifier(object):
     @staticmethod
     def insert( account_id, notifyType ):
 
-        if notifyType.upper() in Notifier.NOTIFYTYPES:
-            save = {}
-            save['account_id'] = account_id
-            save['status'] = 0
-            save['notification_type'] = Notifier.NOTIFYTYPES[notifyType.upper()]
-            save['created_ts'] = 'now()'
+        save = {}
+        save['account_id'] = account_id
+        save['status'] = 0
+        save['notification_type'] = notifyType
+        save['created_ts'] = 'now()'
 
-            return PgDb.getInstance().insert ( "echoalert.notifications", save)
+        return PgDb.getInstance().insert ( "echoalert.notifications", save)
 

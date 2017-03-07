@@ -9,6 +9,9 @@ class SmsEngine(object):
         self.client = TwilioRestClient(account=sid,token=token)
 
     def send( self,msg, number):
-        message = self.client.messages.create(to=number, from_= self.sms_from ,
+        numlist = number.split(",")
+        for num in numlist:
+            num = num.strip()
+            message = self.client.messages.create(to=num, from_= self.sms_from ,
                                                      body=msg)
 
