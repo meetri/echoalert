@@ -13,6 +13,7 @@ from accounts import Account
 from echosite import Echosite
 from notify import Notifier
 from sms import SmsEngine
+from grades import GradeSummary
 
 logging.basicConfig( level=logging.INFO)
 
@@ -37,19 +38,34 @@ logging.info("twilio sid={}, token={}".format(sid,token))
 
 sms = SmsEngine(sid,token,sms_from)
 
+skip = []
 for ndata in notifications:
 
     notify_type = ndata['notification_type']
-    if notify_type == 1: #grade update
-        sms.send("EchoAlert: Grades has been updated",ndata['notification_sms'])
-    elif notify_type == 2: #assignment update
-        sms.send("EchoAlert: Todo has been updated",ndata['notification_sms'])
-    elif notify_type == 3:
-        sms.send("EchoAlert: Course has been updated",ndata['notification_sms'])
-    elif notify_type == 4:
-        sms.send("EchoAlert: Agenda has been updated",ndata['notification_sms'])
-    elif notify_type == 5:
-        sms.send("EchoAlert: Asset has been updated",ndata['notification_sms'])
+    if notify_type not in skip:
+        skip += [ notify_type ]
+
+        if notify_type == 1: #grade update
+            res = GradeSummary.compare_grades_after( ndata['account_id'],ndata['created_ts'])
+            for idx in xrange(0,len(res),2):
+                if idx+1 < len(res):
+                    a = "up"
+                    d = res[idx].get("score") - res[idx+1].get("score")
+                    if d < 0:
+                        a = "down"
+
+                    msg = "grade in {} has gone {} by {}%".format(res[idx].get("course_name"),a,abs(d))
+                    sms.send(msg,ndata['notification_sms'])
+
+            #sms.send("EchoAlert: Grades has been updated",ndata['notification_sms'])
+        elif notify_type == 2: #assignment update
+            sms.send("EchoAlert: Todo has been updated",ndata['notification_sms'])
+        elif notify_type == 3:
+            sms.send("EchoAlert: Course has been updated",ndata['notification_sms'])
+        elif notify_type == 4:
+            sms.send("EchoAlert: Agenda has been updated",ndata['notification_sms'])
+        elif notify_type == 5:
+            sms.send("EchoAlert: Asset has been updated",ndata['notification_sms'])
 
     Notifier.mark_sent( ndata['id'],"Message sent successfully" )
 

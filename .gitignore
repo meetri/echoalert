@@ -1,3 +1,4 @@
 *.pyc
 drivers
 logs
+app/ghostdriver.log

@@ -12,6 +12,7 @@ sys.path.append(script_path + "/models")
 from pgdb import PgDb
 from accounts import Account
 from echosite import Echosite
+from notify import Notifier
 
 logging.basicConfig( level=logging.INFO)
 
@@ -55,7 +56,7 @@ for account in accounts:
         if len(dif) > 0:
             logging.info("updating grades for {}".format ( course.data['course_name'] ))
             course.insert_grades( newgrades )
-            notifications =+ [ Notifier.NOTIFYTYPES["GRADE_UPDATE"] ]
+            notifications += [ Notifier.NOTIFYTYPES["GRADE_UPDATE"] ]
         else:
             logging.info("{} grades up to date".format(course.data['course_name']))
 

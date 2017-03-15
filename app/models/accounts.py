@@ -8,6 +8,7 @@ import psycopg2.extras
 from pgdb import PgDb
 from courses import Course
 from notify import Notifier
+from datetime import datetime
 
 
 class Account(object):
@@ -15,9 +16,11 @@ class Account(object):
     def __init__(self,data):
         self.data = data
         self.courses = None
+        # make sure notification date is before and updated events
+        self.notify_date = datetime.now()
 
     def notify(self, notifyType ):
-        Notifier.insert( self.data['id'], notifyType )
+        Notifier.insert( self.data['id'], notifyType, self.notify_date )
 
 
     def add_courses(self, courses ):

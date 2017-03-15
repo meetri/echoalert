@@ -1,5 +1,6 @@
 '''sms message'''
 
+import logging
 from twilio.rest import TwilioRestClient
 
 class SmsEngine(object):
@@ -9,6 +10,7 @@ class SmsEngine(object):
         self.client = TwilioRestClient(account=sid,token=token)
 
     def send( self,msg, number):
+        logging.info(msg)
         numlist = number.split(",")
         for num in numlist:
             num = num.strip()

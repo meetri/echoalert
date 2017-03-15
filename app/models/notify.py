@@ -21,6 +21,15 @@ class Notifier(object):
         self.data = data
 
     @staticmethod
+    def get_recent_grades(  account_id ):
+        return 1
+
+    @staticmethod
+    def get_recent_agenda(  account_id ):
+        return 1
+
+
+    @staticmethod
     def mark_sent( notify_id, msg ):
         cur = PgDb.getInstance().get_dict_cursor()
         cur.execute("UPDATE echoalert.notifications SET status=1,status_message=%s, sent_ts=now() WHERE id=%s",[msg,notify_id])
@@ -42,13 +51,13 @@ class Notifier(object):
 
 
     @staticmethod
-    def insert( account_id, notifyType ):
+    def insert( account_id, notifyType, notifydate ):
 
         save = {}
         save['account_id'] = account_id
         save['status'] = 0
         save['notification_type'] = notifyType
-        save['created_ts'] = 'now()'
+        save['created_ts'] = notifydate
 
         return PgDb.getInstance().insert ( "echoalert.notifications", save)
 
