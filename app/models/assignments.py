@@ -35,6 +35,18 @@ class Assignment(object):
         cur.close()
         return res
 
+    @staticmethod
+    def get_assignments_after( account_id, date ):
+        cur = PgDb.getInstance().get_dict_cursor()
+        cur.execute("""
+SELECT C.course_name,A.title,A.due,A.created_ts FROM echoalert.assignments AS A
+LEFT JOIN echoalert.courses AS C ON C.id=A.course_id
+WHERE A.account_id=%s AND A.created_ts > %s::timestamp - interval '5 min'""",(account_id,date) )
+
+        res = cur.fetchall()
+        cur.close()
+        return res
+
 
     def parse_due_date(self, datestr ):
 

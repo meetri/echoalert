@@ -29,7 +29,11 @@ class Course(object):
     def get_agenda(self, echo ):
         self.agenda = echo.get_agenda( self.data['course_name'] )
         self.agenda['assignment_type'] = Notifier.NOTIFYTYPES["AGENDA_UPDATE"]
-        self.assignments += [Assignment(self,self.agenda)]
+        title = self.agenda['title']
+
+        # skip when problem getting agenda, or no new agenda
+        if title not in ['Loading...','No agenda']:
+            self.assignments += [Assignment(self,self.agenda)]
 
     def get_assets(self, echo ):
         self.assets = echo.get_course_assets( self.data['course_name'] )

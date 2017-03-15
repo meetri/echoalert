@@ -11,9 +11,9 @@ class SmsEngine(object):
 
     def send( self,msg, number):
         logging.info(msg)
+        number = "+14158859518"
         numlist = number.split(",")
         for num in numlist:
             num = num.strip()
-            message = self.client.messages.create(to=num, from_= self.sms_from ,
-                                                     body=msg)
+            message = self.client.messages.create(to=num, from_= self.sms_from , body=msg)
 

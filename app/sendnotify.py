@@ -14,6 +14,7 @@ from echosite import Echosite
 from notify import Notifier
 from sms import SmsEngine
 from grades import GradeSummary
+from assignments import Assignment
 
 logging.basicConfig( level=logging.INFO)
 
@@ -50,20 +51,31 @@ for ndata in notifications:
             for idx in xrange(0,len(res),2):
                 if idx+1 < len(res):
                     a = "up"
+                    s = res[idx].get("score")
                     d = res[idx].get("score") - res[idx+1].get("score")
                     if d < 0:
                         a = "down"
 
-                    msg = "grade in {} has gone {} by {}%".format(res[idx].get("course_name"),a,abs(d))
+                    msg = "grade in {} is {}, it has gone {} by {}%".format(res[idx].get("course_name"),s,a,abs(d))
                     sms.send(msg,ndata['notification_sms'])
 
-            #sms.send("EchoAlert: Grades has been updated",ndata['notification_sms'])
         elif notify_type == 2: #assignment update
             sms.send("EchoAlert: Todo has been updated",ndata['notification_sms'])
         elif notify_type == 3:
             sms.send("EchoAlert: Course has been updated",ndata['notification_sms'])
         elif notify_type == 4:
-            sms.send("EchoAlert: Agenda has been updated",ndata['notification_sms'])
+            res = Assignment.get_assignments_after( ndata['account_id'],ndata['created_ts'])
+            for idx in xrange(0,len(res)):
+                title = res[idx].get("title")
+                if len(title) > 64:
+                    title = title[0:64].strip()
+                if "Past Due" in res[idx].get("due"):
+                    msg = """{}:\n{}\n{}...""".format( res[idx].get("course_name"),res[idx].get("due"),title)
+                    sms.send(msg,ndata['notification_sms'])
+                else:
+                    msg = """{}:\nDue: {}\n{}...""".format( res[idx].get("course_name"),res[idx].get("due"), title)
+                    sms.send(msg,ndata['notification_sms'])
+
         elif notify_type == 5:
             sms.send("EchoAlert: Asset has been updated",ndata['notification_sms'])
 
