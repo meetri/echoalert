@@ -70,8 +70,9 @@ for ndata in notifications:
                 if len(title) > 64:
                     title = title[0:64].strip()
                 if "Past Due" in res[idx].get("due"):
-                    msg = """{}:\n{}\n{}...""".format( res[idx].get("course_name"),res[idx].get("due"),title)
-                    sms.send(msg,ndata['notification_sms'])
+                    pass
+                    #msg = """{}:\n{}\n{}...""".format( res[idx].get("course_name"),res[idx].get("due"),title)
+                    #sms.send(msg,ndata['notification_sms'])
                 else:
                     msg = """{}:\nDue: {}\n{}...""".format( res[idx].get("course_name"),res[idx].get("due"), title)
                     sms.send(msg,ndata['notification_sms'])
