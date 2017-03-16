@@ -44,7 +44,11 @@ for ndata in notifications:
 
     notify_type = ndata['notification_type']
     if notify_type not in skip:
-        skip += [ notify_type ]
+        if notify_type in [ 2,4]:
+            skip += [ 2,4 ]
+            print "{}".format(skip)
+        else:
+            skip += [ notify_type ]
 
         if notify_type == 1: #grade update
             res = GradeSummary.compare_grades_after( ndata['account_id'],ndata['created_ts'])
@@ -59,22 +63,28 @@ for ndata in notifications:
                     msg = "grade in {} is {}, it has gone {} by {}%".format(res[idx].get("course_name"),s,a,abs(d))
                     sms.send(msg,ndata['notification_sms'])
 
-        elif notify_type == 2: #assignment update
-            sms.send("EchoAlert: Todo has been updated",ndata['notification_sms'])
         elif notify_type == 3:
             sms.send("EchoAlert: Course has been updated",ndata['notification_sms'])
-        elif notify_type == 4:
+        elif notify_type == 4 or notify_type == 2:
             res = Assignment.get_assignments_after( ndata['account_id'],ndata['created_ts'])
             for idx in xrange(0,len(res)):
                 title = res[idx].get("title")
-                if len(title) > 64:
+                atype = res[idx].get("assignment_type")
+
+                if atype == 4 and len(title) > 64:
                     title = title[0:64].strip()
+
                 if "Past Due" in res[idx].get("due"):
                     pass
                     #msg = """{}:\n{}\n{}...""".format( res[idx].get("course_name"),res[idx].get("due"),title)
                     #sms.send(msg,ndata['notification_sms'])
                 else:
-                    msg = """{}:\nDue: {}\n{}...""".format( res[idx].get("course_name"),res[idx].get("due"), title)
+                    if atype == 2:
+                        atypestr = "Todo"
+                    else:
+                        atypestr = "Agenda"
+
+                    msg = """{} - {}:\nDue: {}\n{}...""".format( atypestr, res[idx].get("course_name"),res[idx].get("due"), title)
                     sms.send(msg,ndata['notification_sms'])
 
         elif notify_type == 5:
