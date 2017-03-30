@@ -34,6 +34,23 @@ class Account(object):
 
 
     @staticmethod
+    def get_account_by_phone( phone ):
+        cur = PgDb.getInstance().get_dict_cursor()
+
+        cur.execute("""SELECT ea.id,na.sms_name,ea.echo_username,na.sms_contact FROM echoalert.notify_accounts AS na
+JOIN echoalert.accounts AS ea ON ea.id=na.account_id
+WHERE na.sms_contact=%s""",[phone])
+        res = cur.fetchall()
+        cur.close()
+
+        userlist = []
+        for user in res:
+            userlist += [ Account(user) ]
+
+        return userlist
+
+
+    @staticmethod
     def get_user_paginate ( start,limit ):
         cur = PgDb.getInstance().get_dict_cursor()
         cur.execute("SELECT id,echo_username,echo_password, notification_email,notification_sms,echo_site FROM echoalert.accounts ORDER BY id asc offset %s limit %s",(start,limit))

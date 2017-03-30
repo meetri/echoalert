@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+
+    echoalert:
+        image: meetri/echoalert:latest
+        build: 
+            context: /projects/docker_apps/echo/
+            dockerfile: Dockerfile
+
+        environment:
+            DBPASS: xx
+            DBHOST: xx 
+            INTERVAL: 200
+            TWILIO_SID: "xxx"
+            TWILIO_TOKEN: "yyy"
+            TWILIO_FROM: "+1415XXXXXXX"
+
+            
+            
+    
+
+

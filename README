@@ -1,1 +1,15 @@
 app to scrape echo-ntn grades and send SMS alert notifications
+
+Requirements:
+- docker server
+- docker compose
+- postgres 9.6 database
+- twillio account - for SMS API
+
+What's Next:
+- add email notifications
+- support selecting max notification frequency
+- support excluding notification types
+- add front end to support user signup
+
+

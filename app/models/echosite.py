@@ -23,7 +23,9 @@ class Echosite(object):
 
 
     def __init__(self):
+        #print "loading firefox webdriver"
         #self.browser = webdriver.Firefox(executable_path='../drivers/geckodriver',log_path='../logs/geckodriver.log')
+        #print "done..."
         self.browser = webdriver.PhantomJS()
         self.browser.set_window_size(1024,768)
         self.waiter = WebDriverWait(self.browser,30)
@@ -51,11 +53,15 @@ class Echosite(object):
         username.send_keys(uname)
         pw.send_keys(upass)
         submit.click()
-        self.waiter.until ( EC.presence_of_element_located( (By.XPATH, "//button[@title='GRADEBOOK']")) )
+
+        logging.info("clicked submit")
+        logging.info("waiting for gradebook")
+        self.waiter.until ( EC.presence_of_element_located( (By.XPATH, "//button[@title='Gradebook']")) )
+        logging.info("done")
 
 
     def click_gradebook( self ):
-        gradebook = self.browser.find_element_by_xpath("//button[@title='GRADEBOOK']")
+        gradebook = self.browser.find_element_by_xpath("//button[@title='Gradebook']")
         gradebook.click()
         self.waiter.until ( EC.presence_of_element_located( (By.CLASS_NAME, "buzz-student-objective-summary")) )
 

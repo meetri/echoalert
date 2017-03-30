@@ -24,8 +24,15 @@ connInfo = {
         "password": os.getenv('DBPASS', "defaultpassword"),
         }
 
+print connInfo
+
+print "connecting to db"
 PgDb.setup( **connInfo)
+
+print "getting active users"
 accounts = Account.get_user_paginate(0,100)
+
+print "loading scraper"
 echo = Echosite()
 
 for account in accounts:

@@ -31,6 +31,20 @@ AND GS1.created_ts > %s::timestamp - interval '5 min'""",(account_id,account_id,
 
 
     @staticmethod
+    def get_course_grades( account_id ):
+        cur = PgDb.getInstance().get_dict_cursor()
+        cur.execute("""SELECT DISTINCT ON (gs.course_id) c.course_name, gs.account_id,gs.score, gs.created_ts
+        FROM echoalert.grade_summary AS gs
+        JOIN echoalert.courses AS c ON c.id=gs.course_id
+        WHERE gs.account_id=1 ORDER BY gs.course_id, gs.created_ts DESC""",(account_id) )
+
+        res = cur.fetchall()
+        cur.close()
+        return res
+
+
+
+    @staticmethod
     def get_grade_summary ( account_id, course_id ):
         cur = PgDb.getInstance().get_dict_cursor()
         cur.execute("SELECT * FROM echoalert.grade_summary WHERE account_id=%s AND course_id=%s ORDER BY created_ts DESC limit 1",(account_id,course_id) )
