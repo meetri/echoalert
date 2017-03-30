@@ -4,7 +4,7 @@ Requirements:
 - docker server
 - docker compose
 - postgres 9.6 database
-- twillio account - for SMS API
+- twilio account - for SMS API
 
 What's Next:
 - add email notifications
@@ -17,7 +17,7 @@ How to deploy:
 - manually add a user to the accounts table filling in username and password to echo system
 - build the Dockerfile
 - update the echoalert.yml with db location, credentials, and twillio API key
-- deploy using the compose echoalert.yml file
+- deploy using the docker-compose echoalert.yml file
 
 
 
