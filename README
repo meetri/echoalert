@@ -12,4 +12,13 @@ What's Next:
 - support excluding notification types
 - add front end to support user signup
 
+How to deploy:
+- setup postgres 9.6 database with schema located in _sql/echoalert.sql
+- manually add a user to the accounts table filling in username and password to echo system
+- build the Dockerfile
+- update the echoalert.yml with db location, credentials, and twillio API key
+- deploy using the compose echoalert.yml file
+
+
+
 
